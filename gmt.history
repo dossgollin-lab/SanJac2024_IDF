@@ -1,0 +1,8 @@
+# GMT 6 Session common arguments shelf
+BEGIN GMT 6.6.0
+B	+t790 East Fork San Jacinto
+J	X
+JX	X40/24
+R	-0.1/5.123963979403259/-3/1.6094379124341003
+@L	6
+END
