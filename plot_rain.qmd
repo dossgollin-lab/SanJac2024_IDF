@@ -1,6 +1,6 @@
 ---
 title: Analysis of Extreme Rainfall on the San Jacinto River
-author: Yuchen Lu and James Doss-Gollin
+author: Yuchen Lu
 date: 2023-05-13
 
 format:
@@ -10,6 +10,14 @@ jupyter: julia-1.9
 ---
 
 From late April to early May 2024, heavy rainfall to the Northeast of Houston caused severe flooding. Particularly, the area around the San Jacinto River and Lake Houston experienced the highest cumulative rainfall from April 29th to May 6th. This analysis compares the observed rainfall during this event with the corresponding estimates from Atlas 14 at a representative gauge.
+
+Atlas 14 is a precipitation frequency estimation tool developed by the National Oceanic and Atmospheric Administration (NOAA). It provides estimates of rainfall intensities for different durations and return periods. The estimates are based on historical rainfall data and are used for engineering design and flood risk assessment.
+
+::: {.callout-tip}
+For reproducibility and transparency, we are publishing this analysis as a Quarto notebook, which allows us to combine code and narrative in a single document.
+To view code, click on the exapndable triangles below.
+To view the source, see [our GitHub](https://github.com/dossgollin-lab/SanJac2024_IDF).
+:::
 
 ```{julia}
 #| code-fold: true
@@ -33,7 +41,7 @@ Atlas14_790 = CSV.File("data/790_Atlas14_PDS.csv", skipto=14) |> DataFrame
 Atlas14_790 = Atlas14_790[6:15, :];
 ```
 
-# Rainfall observations
+## Rainfall
 
 We selected the East Fork San Jacinto station from the Harris County Flood Warning System, which recorded one of the highest cumulative rainfall in Harris County from April 29th to May 6th, 2024. 
 
@@ -56,7 +64,7 @@ p_rain_timeseries = gmtread("plots/790_MayRain.png");
 imshow(p_rain_timeseries, frame=:none)
 ```
 
-# Comparing to IDF curves
+## Comparing to IDF curves
 
 We extract the maximum hourly rainfall totals for different durations (ranging from 1 hour to 7 days) and compare them with the Atlas 14 estimates below. According to Atlas 14, this heavy rainfall event corresponding to approximately a 5~25 year occurrence. It is important to note that Atlas 14 estimates are derived from historical events and do not project future conditions. 
 
@@ -108,3 +116,10 @@ lines!(log.(x_labels), log.(Atlas14_790[:, 7] ./ x_labels), decorated=(quoted=tr
 p_comparison = gmtread("plots/790_comparison.png");
 imshow(p_comparison, frame=:none)
 ```
+
+## Conclusions
+
+Without drawing too much from a single short analysis, a few conclusions stand out
+
+1. This was approximately a 25 year event at most. That the impacts on people were so severe speaks to the high degree of vulnerability and a need for better preparedness.
+2. Atlas 14 estimates are useful, but have important limitations. Importantly, they do not account for increasing likelihood of extreme weather. More fundamentally, it provides probability distributions at a single point, but not on the spatial or teporal structure of rainfall. We are working hard to address both of these limitations in our research -- stay tuned for more updates or visit [dossgollin-lab.github.io](https://dossgollin-lab.github.io) for more information.
